@@ -1,4 +1,4 @@
-package com.lhh1171;
+package com.lhh1171.linklist;
 
 public class SinglyLinkedList {
     private SinglyLinkedListNode head = null;
@@ -22,6 +22,25 @@ public class SinglyLinkedList {
         }
         head = newNode;
     }
+
+
+    // 检测环
+    public static boolean checkCircle(SinglyLinkedListNode list) {
+        if (list == null) return false;
+
+        SinglyLinkedListNode fast = list.next;
+        SinglyLinkedListNode slow = list;
+
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+
+            if (slow == fast) return true;
+        }
+
+        return false;
+    }
+
 
     /*尾插法*/
     public void insertTail(int value){
