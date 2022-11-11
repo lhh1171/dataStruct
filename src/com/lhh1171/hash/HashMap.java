@@ -99,9 +99,47 @@ public class HashMap<K, V> {
      * @return
      */
     private int hash(Object key) {
-        int h;
-        return (key == null) ? 0 : ((h = key.hashCode()) ^ (h >>> 16)) % table.length;
+        int h = key.hashCode();
+        //左移16位，除2^16
+        //h^h/2^16,
+        int h1=h >>> 16;
+        int i = (h) ^ (h1);
+
+        //h小于2^16，h1都为0
+        //和0抑或还得自己
+        /*
+         *h  0000 0000 0000 0000 1111 1111 1111 1111
+         *h1 0000 0000 0000 0000 0000 0000 0000 0000
+         *i  0000 0000 0000 0000 1111 1111 1111 1111
+         *  */
+
+        //要是h大于2^16,那就只保留前16位
+        /*
+         *h  0000 0000 0000 0011 1111 1111 1111 1111
+         *h1 0000 0000 0000 0000 0000 0000 0000 0011
+         *i  0000 0000 0000 0000 0000 0000 0000 0011
+         *
+         *  */
+        /*...........................*/
+        /*
+         *h  1111 1111 1111 1111 1111 1111 1111 1111
+         *h1 0000 0000 0000 0000 1111 1111 1111 1111
+         *i  0000 0000 0000 0000 1111 1111 1111 1111
+         *
+         *  */
+
+        //正数
+        /*0----->2^16-1*/
+        //负数
+        /*0----->2^16-1*/
+        //使得i永远小于
+        /*((h = key.hashCode()) ^ (h >>> 16))
+        * 表示*/
+        return (key == null) ? 0 : i% table.length;
     }
+
+
+
 
     /**
      * 扩容
@@ -185,6 +223,9 @@ public class HashMap<K, V> {
     }
 
     public static void main(String[] args) {
+//        int i=4;
+//        i=i>>>1;
+//        System.out.println(i);
         HashMap<String,String> hashMap=new HashMap<>();
         hashMap.put("1","1");
         System.out.println(hashMap.get("1"));
